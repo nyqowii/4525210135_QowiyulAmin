@@ -3,4 +3,5 @@
 <p>NPM  : 4525210135</p>
 <p>Kelas : A</p>
 
-<img width="1128" height="396" alt="image" src="https://github.com/user-attachments/assets/e3be2428-84ed-4122-a978-75bb9fe35548" />
+<img width="1919" height="1031" alt="image" src="https://github.com/user-attachments/assets/d39ddf28-e11c-4f5a-85d0-f058783c47b5" />
+
