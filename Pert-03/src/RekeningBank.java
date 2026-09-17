@@ -7,17 +7,11 @@
  *   3. setoran dan penarikan selalu bernilai positif
  */
 public class RekeningBank {
+    public static final double BUNGA_TAHUNAN = 0.025;
+    public static final double BIAYA_ADMINISTRASI = 5000;
+    public static final double BATAS_PENARIKAN_SEKALI = 5000000;
 
-    // TODO 1: ganti tiga angka ajaib berikut menjadi konstanta bernama
-    //         (public static final). Setelah itu, tidak boleh ada lagi
-    //         angka literal di dalam badan method.
-    //   - bunga tahunan          : 0.025
-    //   - biaya administrasi     : 5000
-    //   - batas penarikan sekali : 5000000
-
-
-    // TODO 2: deklarasikan field statis penghitung jumlah rekening.
-    //         Perhatikan: static, privat, dan bernilai awal 0.
+    private static int jumlahRekening = 0;
 
 
     private final String nomor;
@@ -30,40 +24,45 @@ public class RekeningBank {
      *         Jangan menyalin validasi ke sini.
      */
     public RekeningBank(String nomor, String pemilik) {
-        // TODO 3 — ganti baris di bawah dengan delegasi
-        this.nomor = nomor;
-        this.pemilik = pemilik;
-        this.saldo = 0;
+        this(nomor, pemilik, 0);
     }
 
     /** Constructor lengkap — SATU-SATUNYA tempat validasi berada. */
     public RekeningBank(String nomor, String pemilik, double saldoAwal) {
-        // TODO 4: tolak nomor kosong dan saldo awal negatif.
+        if (nomor == null || nomor.isBlank() || saldoAwal < 0) {
+            throw new IllegalArgumentException();
+        }
 
         this.nomor = nomor;
         this.pemilik = pemilik;
         this.saldo = saldoAwal;
 
-        // TODO 5: naikkan penghitung jumlah rekening DI SINI SAJA.
-        //         Pikirkan mengapa bukan di kedua constructor.
+        jumlahRekening++;
     }
+    
 
     public void setor(double jumlah) {
-        // TODO 6: tolak jumlah <= 0, lalu tambahkan ke saldo.
+        if (jumlah <= 0) {
+            throw new IllegalArgumentException();
+        }
+        saldo += jumlah;
     }
 
     public void tarik(double jumlah) {
-        // TODO 7: tolak jumlah <= 0, tolak jika melebihi saldo,
-        //         dan tolak jika melebihi batas penarikan sekali transaksi.
+        if (jumlah <= 0 || jumlah > saldo || jumlah > BATAS_PENARIKAN_SEKALI) {
+            throw new IllegalArgumentException();
+        }
+        saldo -= jumlah;
     }
 
     /** TODO 8: kurangi saldo sebesar biaya administrasi, tetapi jangan sampai negatif. */
     public void potongBiayaAdmin() {
+        saldo = Math.max(0, saldo - BIAYA_ADMINISTRASI);
     }
 
     /** TODO 9: method statis — kembalikan jumlah rekening yang pernah dibuat. */
     public static int getJumlahRekening() {
-        return -1;   // ganti
+        return jumlahRekening;
     }
 
     /**
@@ -72,7 +71,7 @@ public class RekeningBank {
      *          Itulah alasan ia pantas menjadi static.
      */
     public static double bungaSetahun(double pokok) {
-        return 0;   // ganti
+        return pokok * BUNGA_TAHUNAN;
     }
 
     public double getSaldo()  { return saldo; }
